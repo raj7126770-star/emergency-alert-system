@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Emergency Alert System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="app-shell">
+  <div class="topbar">
+    <a class="brand" href="/admin" aria-label="We Care 24x7 admin dashboard"><span class="brand-mark">+</span><span>We Care <em>24×7</em><small>Control room</small></span></a>
+    <div class="user-info">
+      <span class="live-state"><i></i> Live monitoring</span><span class="welcome"><strong>{{ full_name }}</strong></span>
+      <button id="logout-btn" class="btn-logout">Log Out</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="page-heading">
+      <div><p class="eyebrow ink">Response coordination</p><h1 class="page-title">Emergency control room</h1><p class="page-subtitle">Prioritize new cases, contact responders, and keep every incident moving.</p></div>
+      <div class="secure-chip"><span></span> Refreshes every 10s</div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card stat-total">
+        <div class="num" id="stat-total">–</div>
+        <div class="label">Total Alerts</div>
+      </div>
+      <div class="stat-card stat-pending">
+        <div class="num" id="stat-pending">–</div>
+        <div class="label">Pending</div>
+      </div>
+      <div class="stat-card stat-resolved">
+        <div class="num" id="stat-resolved">–</div>
+        <div class="label">Resolved</div>
+      </div>
+    </div>
+
+    <div class="list-toolbar"><div><p class="eyebrow ink">Incoming cases</p><h2 class="section-title">Alerts</h2></div><div class="filter-bar" aria-label="Filter alerts">
+      <button class="active" data-filter="All">All</button>
+      <button data-filter="Pending">Pending</button>
+      <button data-filter="Acknowledged">Acknowledged</button>
+      <button data-filter="Resolved">Resolved</button>
+    </div></div>
+
+    <div id="all-alerts-list">
+      <div class="empty-state">Loading...</div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

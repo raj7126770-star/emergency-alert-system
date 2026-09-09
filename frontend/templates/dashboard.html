@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Emergency Alert System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="app-shell">
+  <div class="topbar">
+    <a class="brand" href="/dashboard" aria-label="We Care 24x7 dashboard"><span class="brand-mark">+</span><span>We Care <em>24×7</em></span></a>
+    <div class="user-info">
+      <span class="welcome">Signed in as <strong>{{ full_name }}</strong></span>
+      <button id="logout-btn" class="btn-logout">Log Out</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="page-heading">
+      <div>
+        <p class="eyebrow ink">Emergency assistance</p>
+        <h1 class="page-title">Help is one tap away.</h1>
+        <p class="page-subtitle">Choose an emergency type or send an SOS. We will include your latest available location.</p>
+      </div>
+      <div class="secure-chip"><span></span> Location protected</div>
+    </div>
+
+    <section class="quick-sos" aria-labelledby="quick-sos-title">
+      <div>
+        <p class="eyebrow">Immediate danger?</p>
+        <h2 id="quick-sos-title">Send an SOS</h2>
+        <p>Instantly notify responders that you need urgent help. Your current location is included when available.</p>
+      </div>
+      <button id="quick-sos-btn" class="quick-sos-btn" type="button" aria-describedby="quick-sos-help">
+        <span aria-hidden="true">SOS</span>
+        <span class="quick-sos-label">Send SOS now</span>
+      </button>
+      <p id="quick-sos-help" class="sr-only">Sends an immediate emergency alert to responders.</p>
+      <div id="quick-sos-msg" class="msg" role="status" aria-live="polite"></div>
+    </section>
+
+    <div class="sos-panel">
+      <div class="panel-heading">
+        <div><p class="eyebrow ink">Tell us what happened</p><h2>Send an alert</h2></div>
+        <span class="step-chip">Step 1 of 2</span>
+      </div>
+      <form id="sos-form">
+        <label>Emergency type</label>
+        <div class="type-grid">
+          <button class="type-btn" data-type="Medical" type="button"><span class="icon">&#x1F691;</span>Medical</button>
+          <button class="type-btn" data-type="Fire" type="button"><span class="icon">&#x1F525;</span>Fire</button>
+          <button class="type-btn" data-type="Police" type="button"><span class="icon">&#x1F693;</span>Police</button>
+          <button class="type-btn" data-type="Accident" type="button"><span class="icon">&#x26A0;&#xFE0F;</span>Accident</button>
+          <button class="type-btn" data-type="Other" type="button"><span class="icon">&#x2757;</span>Other</button>
+        </div>
+
+        <label for="message">Details (optional)</label>
+        <textarea id="message" rows="3" placeholder="Briefly describe the emergency..."></textarea>
+
+        <div class="location-row">
+          <div id="location-status" class="location-status" role="status" aria-live="polite">Waiting for location permission...</div>
+          <button id="refresh-location-btn" class="btn-location" type="button">Update location</button>
+          <button id="share-location-btn" class="btn-location" type="button">Share location</button>
+        </div>
+
+        <button type="submit" class="btn btn-primary send-alert-btn"><span>🚨</span> Send emergency alert</button>
+        <div id="sos-msg" class="msg"></div>
+      </form>
+    </div>
+
+    <div class="history-heading"><div><p class="eyebrow ink">Your activity</p><h2 class="section-title">Alert history</h2></div><span class="refresh-copy">Updates automatically</span></div>
+    <div id="my-alerts-list">
+      <div class="empty-state">Loading...</div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/alerts.js') }}"></script>
+</body>
+</html>

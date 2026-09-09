@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Emergency Alert System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="auth-page">
+  <div class="auth-wrap">
+    <section class="auth-intro"><div class="auth-logo"><span>+</span> We Care <b>24×7</b></div><p class="eyebrow">Emergency response network</p><h2>Someone is ready to respond.</h2><p>Send an SOS with your location and keep responders informed in one secure place.</p><div class="auth-points"><span>◉ Live location sharing</span><span>◉ Fast emergency routing</span><span>◉ Status updates</span></div></section>
+    <div class="auth-card">
+      <p class="eyebrow ink">Welcome back</p><h1>Sign in</h1>
+      <p class="subtitle">Access your emergency dashboard securely.</p>
+
+      <form id="login-form">
+        <label for="username">Username</label>
+        <input type="text" id="username" required autocomplete="username">
+
+        <label for="password">Password</label>
+        <input type="password" id="password" required autocomplete="current-password">
+
+        <button type="submit" class="btn btn-primary">Log In</button>
+        <div id="msg" class="msg"></div>
+      </form>
+
+      <div class="form-footer">
+        Don't have an account? <a href="/register">Register here</a>
+      </div>
+      <div class="form-footer" style="margin-top:6px; font-size:0.78rem;">
+        Demo admin login — username: <b>admin</b> / password: <b>admin123</b>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</body>
+</html>
