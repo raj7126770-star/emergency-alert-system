@@ -163,17 +163,27 @@ async function sendAlert(alertType, message) {
   // available location. The alert still sends if location is unavailable.
   await requestFreshLocation();
   try {
-    const res = await fetch("/api/send-alert", {
+    const res = await fetch("/api/send-alert", {  // past kar denaa
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         alert_type: alertType,
+        name:"raj kumar",
         message,
-        lat: currentCoords.lat,
-        lng: currentCoords.lng,
+        location:{
+          latitude :currentCoords.lat,
+          longitude:currentCoords.lng
+        }
       }),
     });
     const data = await res.json();
+
+    if(data.success === true){
+      alert("email are send");
+    }
+    console.log(data);
+
+    // res ==== result of API
     return res.ok
       ? { ok: true, data }
       : { ok: false, error: data.error || "Failed to send alert" };

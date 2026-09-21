@@ -422,12 +422,20 @@ def api_send_alert():
         reporter_username=reporter["username"] if reporter else None,
         latitude=lat, longitude=lng,
     )
+    delivery_messages = []
+    if email_delivered:
+        delivery_messages.append(f"Email delivered to {email_delivered} response inbox(es).")
     if delivered:
-        sms_note = f" SMS delivered to {delivered} emergency contact(s)."
-    else:
-        sms_note = " Alert saved, but SMS was not delivered. Check the Twilio configuration."
+        delivery_messages.append(f"SMS delivered to {delivered} emergency contact(s).")
+    if not delivery_messages:
+        delivery_messages.append("Alert saved, but no notification channel was delivered. Check the server configuration.")
+    elif sms_errors:
+        # Email may have notified responders successfully, so do not present a
+        # successful alert as a failure just because the optional SMS channel
+        # is unavailable.
+        delivery_messages.append("SMS could not be delivered.")
     return jsonify({
-        "message": f"Emergency alert sent! Help is on the way.{sms_note}",
+        "message": "Emergency alert sent! Help is on the way. " + " ".join(delivery_messages),
         "sms_delivered": delivered,
         "sms_errors": sms_errors,
         "email_delivered": email_delivered,
@@ -467,6 +475,8 @@ def api_all_alerts():
 
 @app.route("/api/update-status", methods=["POST"])
 @admin_required
+
+
 def api_update_status():
     data = request.get_json(silent=True)
     if not isinstance(data, dict):

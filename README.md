@@ -167,7 +167,7 @@ registration. A Twilio trial account can only send to verified recipient numbers
 
 ## Real-time email alerts
 
-The app sends email immediately when an alert is created. Configure SMTP and
+The app sends a responsive, mobile-friendly email immediately when an alert is created. Configure SMTP and
 the `POLICE_EMAIL_RECIPIENTS`, `FIRE_EMAIL_RECIPIENTS`, `SOS_EMAIL_RECIPIENTS`,
 and `OTHER_EMAIL_RECIPIENTS` lists in `.env`, using `.env.example` as the
 template. Police and Fire alerts go to their matching list; SOS, Medical, and
