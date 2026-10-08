@@ -65,6 +65,16 @@ python run.py
 
 Open **http://127.0.0.1:5000**
 
+### Location permission
+
+Browser location access is intentionally restricted to secure origins. For
+local development, open the app at **http://localhost:5000** or
+**http://127.0.0.1:5000** (not a LAN/IP address). On Vercel, always open the
+generated **https://** deployment URL. The project sends
+`Permissions-Policy: geolocation=(self)` and enables HSTS in its Vercel
+configuration, so its own pages are allowed to request location after the
+browser permission prompt is accepted.
+
 A default admin account is created automatically on first run:
 
 | Username | Password |

@@ -1,6 +1,21 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "flask",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Permissions-Policy",
+          "value": "geolocation=(self)"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        }
+      ]
+    }
+  ],
   "functions": {
     "src/app.py": {
       "maxDuration": 30,

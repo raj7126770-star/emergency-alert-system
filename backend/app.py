@@ -24,6 +24,7 @@ from flask import (
     render_template, redirect, url_for, g
 )
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.middleware.proxy_fix import ProxyFix
 from dotenv import load_dotenv
 from backend.email_service import notify_alert_by_email
 
@@ -57,6 +58,22 @@ app = Flask(
 app.config["SECRET_KEY"] = os.environ.get(
     "SECRET_KEY", "development-only-change-this-secret-key"
 )
+# Vercel and most production reverse proxies terminate TLS before forwarding
+# requests to Flask. Respect their original scheme so HTTPS redirects and
+# security decisions use the URL the browser actually opened.
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+
+
+@app.after_request
+def allow_same_origin_location(response):
+    """Permit this app's pages to request browser geolocation.
+
+    Geolocation itself remains available only on HTTPS (or localhost), as
+    required by browsers. The Vercel configuration applies the same policy to
+    static assets served by the CDN.
+    """
+    response.headers.setdefault("Permissions-Policy", "geolocation=(self)")
+    return response
 
 
 # ---------------------------------------------------------------------------

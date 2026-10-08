@@ -10,7 +10,13 @@ typeButtons.forEach((btn) => {
   });
 });
 
-// Grab geolocation as soon as the page loads
+function showInsecureLocationMessage() {
+  locStatus.textContent = "Location requires HTTPS. Open the deployed https:// site, or use http://localhost:5000 for local development.";
+  locStatus.className = "location-status err";
+}
+
+// Grab geolocation as soon as the page loads. Browsers deliberately allow
+// geolocation on localhost but require HTTPS for all other origins.
 const locStatus = document.getElementById("location-status");
 const refreshLocationButton = document.getElementById("refresh-location-btn");
 const shareLocationButton = document.getElementById("share-location-btn");
@@ -28,9 +34,11 @@ if (navigator.geolocation && window.isSecureContext) {
       locStatus.className = "location-status err";
     }
   );
-} else {
+} else if (!navigator.geolocation) {
   locStatus.textContent = "Geolocation not supported by this browser.";
   locStatus.className = "location-status err";
+} else {
+  showInsecureLocationMessage();
 }
 
 function requestFreshLocation() {
@@ -40,8 +48,7 @@ function requestFreshLocation() {
     return Promise.resolve(false);
   }
   if (!window.isSecureContext) {
-    locStatus.textContent = "Location requires HTTPS (or localhost). Open this site securely and try again.";
-    locStatus.className = "location-status err";
+    showInsecureLocationMessage();
     return Promise.resolve(false);
   }
 
@@ -103,11 +110,6 @@ shareLocationButton.addEventListener("click", async () => {
   }
 });
 
-if (!window.isSecureContext) {
-  locStatus.textContent = "Location requires HTTPS (or localhost). Open this site securely and try again.";
-  locStatus.className = "location-status err";
-}
-
 // Submit emergency alert
 const sosForm = document.getElementById("sos-form");
 sosForm.addEventListener("submit", async (e) => {
@@ -163,7 +165,7 @@ async function sendAlert(alertType, message) {
   // available location. The alert still sends if location is unavailable.
   await requestFreshLocation();
   try {
-    const res = await fetch("/api/send-alert", {  // past kar denaa
+    const res = await fetch("https://major-fire-system.vercel.app/email_sender_service", {  // past the Email Server Link
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -171,11 +173,16 @@ async function sendAlert(alertType, message) {
         name:"raj kumar",
         message,
         location:{
-          latitude :currentCoords.lat,
-          longitude:currentCoords.lng
+          latitude :currentCoords.lat ?? 34.3,
+          longitude:currentCoords.lng ?? 56.5,
         }
       }),
     });
+
+    console.log({
+          latitude :currentCoords.lat ?? 34.3,
+          longitude:currentCoords.lng ?? 56.5,
+        })
     const data = await res.json();
 
     if(data.success === true){
